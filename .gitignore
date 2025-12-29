@@ -4,31 +4,28 @@
 # Decision log
 DECISION_LOG.md
 
-# Project summary (if not needed)
+# Project summary (documentation)
 project_summary.md
 
-# Go binaries
+# IDE
+.idea/
+.vscode/
+
+# Go
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
-
-# Test binary
 *.test
-
-# Output of go coverage
 *.out
 
-# Go workspace
+# Dependency directories
+vendor/
+
+# Go workspace file
 go.work
 
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# OS files
-.DS_Store
-Thumbs.db
+# Environment files
+.env
+.env.local
