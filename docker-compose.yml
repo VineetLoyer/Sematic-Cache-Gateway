@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  # The Vector Database
+  redis:
+    image: redis/redis-stack-server:latest
+    container_name: semantic_cache_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    environment:
+      - REDIS_ARGS="--requirepass mysecurepassword"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # We will add your Go Service here later in Day 5
+  # app:
+  #   build: .
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - REDIS_ADDR=redis:6379
+  #     - OPENAI_API_KEY=${OPENAI_API_KEY}
+  #   depends_on:
+  #     - redis
+
+volumes:
+  redis_data:
