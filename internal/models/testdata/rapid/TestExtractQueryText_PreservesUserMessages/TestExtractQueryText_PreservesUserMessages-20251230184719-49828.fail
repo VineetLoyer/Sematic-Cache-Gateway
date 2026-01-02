@@ -1,0 +1,53 @@
+# 2025/12/30 18:47:19.684345 [TestExtractQueryText_PreservesUserMessages] [rapid] draw numUserMessages: 4
+# 2025/12/30 18:47:19.684345 [TestExtractQueryText_PreservesUserMessages] [rapid] draw userContent: "0"
+# 2025/12/30 18:47:19.684345 [TestExtractQueryText_PreservesUserMessages] [rapid] draw userContent: "0"
+# 2025/12/30 18:47:19.684345 [TestExtractQueryText_PreservesUserMessages] [rapid] draw userContent: "0"
+# 2025/12/30 18:47:19.684345 [TestExtractQueryText_PreservesUserMessages] [rapid] draw userContent: "0"
+# 2025/12/30 18:47:19.684345 [TestExtractQueryText_PreservesUserMessages] [rapid] draw numOtherMessages: 1
+# 2025/12/30 18:47:19.684345 [TestExtractQueryText_PreservesUserMessages] [rapid] draw addOther: false
+# 2025/12/30 18:47:19.684345 [TestExtractQueryText_PreservesUserMessages] [rapid] draw addOther: false
+# 2025/12/30 18:47:19.684345 [TestExtractQueryText_PreservesUserMessages] [rapid] draw addOther: false
+# 2025/12/30 18:47:19.684345 [TestExtractQueryText_PreservesUserMessages] [rapid] draw addOther: true
+# 2025/12/30 18:47:19.684345 [TestExtractQueryText_PreservesUserMessages] [rapid] draw roleIdx2: 0
+# 2025/12/30 18:47:19.684345 [TestExtractQueryText_PreservesUserMessages] [rapid] draw otherContent2: " "
+# 2025/12/30 18:47:19.684345 [TestExtractQueryText_PreservesUserMessages] Non-user message content " " found in extracted text "0 0 0 0"
+# 
+v0.4.8#10022502178899943679
+0x0
+0x38e38e38e38e4
+0x3
+0x0
+0x0
+0x0
+0x1
+0x0
+0x0
+0x0
+0x0
+0x1
+0x0
+0x0
+0x0
+0x0
+0x1
+0x0
+0x0
+0x0
+0x0
+0x1
+0x0
+0x0
+0x0
+0x1
+0x0
+0x0
+0x0
+0x1
+0x0
+0x0
+0x0
+0x0
+0x0
+0x0
+0x0
+0x0
