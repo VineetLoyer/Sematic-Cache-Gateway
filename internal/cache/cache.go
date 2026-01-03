@@ -13,12 +13,12 @@ import (
 
 // CacheEntry represents a cached LLM response with its embedding.
 type CacheEntry struct {
-	ID          string          `json:"id"`
-	QueryHash   string          `json:"query_hash"`
-	QueryText   string          `json:"user_query"`
-	Embedding   []float32       `json:"embedding"`
-	LLMResponse json.RawMessage `json:"llm_response"`
-	CreatedAt   int64           `json:"created_at"`
+	ID          string    `json:"id"`
+	QueryHash   string    `json:"query_hash"`
+	QueryText   string    `json:"user_query"`
+	Embedding   []float32 `json:"embedding"`
+	LLMResponse string    `json:"llm_response"` // Stored as string to avoid marshal issues
+	CreatedAt   int64     `json:"created_at"`
 }
 
 // CacheService defines the interface for cache operations.
@@ -279,7 +279,7 @@ func validateCacheEntry(entry *CacheEntry) error {
 	if len(entry.Embedding) == 0 {
 		return fmt.Errorf("embedding is required")
 	}
-	if len(entry.LLMResponse) == 0 {
+	if entry.LLMResponse == "" {
 		return fmt.Errorf("llm_response is required")
 	}
 	return nil

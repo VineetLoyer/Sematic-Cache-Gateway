@@ -133,7 +133,7 @@ func generateTestEmbedding() []float32 {
 // Requirements: 1.1, 4.2, 4.3
 func TestIntegration_CacheHit_ExactMatch(t *testing.T) {
 	// Setup cached response
-	cachedResponse := json.RawMessage(`{"id":"cached-123","choices":[{"message":{"content":"cached response"}}]}`)
+	cachedResponse := `{"id":"cached-123","choices":[{"message":{"content":"cached response"}}]}`
 	
 	mockCache := &mockCacheService{
 		exactMatchEntry: &cache.CacheEntry{
@@ -188,8 +188,8 @@ func TestIntegration_CacheHit_ExactMatch(t *testing.T) {
 	}
 
 	// Verify response body matches cached response
-	if !bytes.Equal(rr.Body.Bytes(), cachedResponse) {
-		t.Errorf("response body mismatch: got %s, want %s", rr.Body.String(), string(cachedResponse))
+	if !bytes.Equal(rr.Body.Bytes(), []byte(cachedResponse)) {
+		t.Errorf("response body mismatch: got %s, want %s", rr.Body.String(), cachedResponse)
 	}
 }
 
@@ -198,7 +198,7 @@ func TestIntegration_CacheHit_ExactMatch(t *testing.T) {
 // Requirements: 1.1, 4.2, 4.3
 func TestIntegration_CacheHit_SemanticMatch(t *testing.T) {
 	// Setup cached response for semantic match
-	cachedResponse := json.RawMessage(`{"id":"semantic-123","choices":[{"message":{"content":"semantic cached response"}}]}`)
+	cachedResponse := `{"id":"semantic-123","choices":[{"message":{"content":"semantic cached response"}}]}`
 	
 	mockCache := &mockCacheService{
 		exactMatchEntry: nil, // No exact match
@@ -260,8 +260,8 @@ func TestIntegration_CacheHit_SemanticMatch(t *testing.T) {
 	}
 
 	// Verify response body matches cached response
-	if !bytes.Equal(rr.Body.Bytes(), cachedResponse) {
-		t.Errorf("response body mismatch: got %s, want %s", rr.Body.String(), string(cachedResponse))
+	if !bytes.Equal(rr.Body.Bytes(), []byte(cachedResponse)) {
+		t.Errorf("response body mismatch: got %s, want %s", rr.Body.String(), cachedResponse)
 	}
 }
 
@@ -637,7 +637,7 @@ func TestIntegration_SimilarityThreshold(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			cachedResponse := json.RawMessage(`{"id":"test","choices":[]}`)
+			cachedResponse := `{"id":"test","choices":[]}`
 			
 			var similarEntry *cache.CacheEntry
 			if tt.expectCacheHit {

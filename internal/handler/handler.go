@@ -163,7 +163,7 @@ func (h *CacheHandler) serveCachedResponse(
 	w.Header().Set("X-Cache-Status", "HIT")
 	w.Header().Set("X-Request-ID", requestID)
 	w.WriteHeader(http.StatusOK)
-	w.Write(entry.LLMResponse)
+	w.Write([]byte(entry.LLMResponse)) // Convert string back to bytes
 
 	log.LogRequest(logger.RequestLog{
 		RequestID:       requestID,
@@ -238,7 +238,7 @@ func (h *CacheHandler) forwardToUpstream(
 			QueryHash:   queryHash,
 			QueryText:   queryText,
 			Embedding:   embeddingVec,
-			LLMResponse: respBody,
+			LLMResponse: string(respBody), // Store as string
 			CreatedAt:   time.Now().Unix(),
 		}
 		h.cache.StoreAsync(entry)
