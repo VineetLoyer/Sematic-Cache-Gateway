@@ -101,6 +101,15 @@ func (r *RedisClient) JSONSet(ctx context.Context, key string, path string, valu
 	return nil
 }
 
+// JSONSetRaw stores a raw JSON string at the specified key and path.
+func (r *RedisClient) JSONSetRaw(ctx context.Context, key string, path string, jsonStr string) error {
+	cmd := r.client.Do(ctx, "JSON.SET", key, path, jsonStr)
+	if cmd.Err() != nil {
+		return fmt.Errorf("JSON.SET failed: %w", cmd.Err())
+	}
+	return nil
+}
+
 // JSONGet retrieves a JSON value from the specified key and path.
 func (r *RedisClient) JSONGet(ctx context.Context, key string, path string) ([]byte, error) {
 	cmd := r.client.Do(ctx, "JSON.GET", key, path)

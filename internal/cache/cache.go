@@ -251,8 +251,14 @@ func (c *CacheServiceImpl) store(ctx context.Context, entry *CacheEntry) error {
 		entry.CreatedAt = time.Now().Unix()
 	}
 
-	// Store the entry as JSON
-	if err := c.redis.JSONSet(ctx, entry.ID, "$", entry); err != nil {
+	// Marshal entry to JSON first to validate it
+	data, err := json.Marshal(entry)
+	if err != nil {
+		return fmt.Errorf("failed to marshal JSON: %w", err)
+	}
+
+	// Store the entry as JSON using raw JSON string
+	if err := c.redis.JSONSetRaw(ctx, entry.ID, "$", string(data)); err != nil {
 		return fmt.Errorf("failed to store cache entry: %w", err)
 	}
 
