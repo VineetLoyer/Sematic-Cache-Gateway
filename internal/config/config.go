@@ -22,6 +22,9 @@ type Config struct {
 
 	// EmbeddingAPIKey is the API key for the embedding service
 	EmbeddingAPIKey string
+
+	// UpstreamAPIKey is the API key for the upstream LLM (optional, uses client header if not set)
+	UpstreamAPIKey string
 }
 
 // Default configuration values
@@ -38,6 +41,7 @@ func Load() (*Config, error) {
 		UpstreamURL:         getEnvOrDefault("UPSTREAM_URL", DefaultUpstreamURL),
 		RedisURL:            getEnvOrDefault("REDIS_URL", DefaultRedisURL),
 		EmbeddingAPIKey:     os.Getenv("EMBEDDING_API_KEY"),
+		UpstreamAPIKey:      os.Getenv("UPSTREAM_API_KEY"),
 		SimilarityThreshold: DefaultSimilarityThreshold,
 		Port:                DefaultPort,
 	}

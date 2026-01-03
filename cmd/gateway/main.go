@@ -75,13 +75,18 @@ func main() {
 	proxyConfig := proxy.ProxyConfig{
 		UpstreamURL: cfg.UpstreamURL,
 		Timeout:     60 * time.Second,
+		APIKey:      cfg.UpstreamAPIKey,
 	}
 	upstreamProxy, err := proxy.New(proxyConfig)
 	if err != nil {
 		log.Error("failed to create upstream proxy", "error", err.Error())
 		os.Exit(1)
 	}
-	log.Info("upstream proxy initialized", "upstream_url", cfg.UpstreamURL)
+	if cfg.UpstreamAPIKey != "" {
+		log.Info("upstream proxy initialized with server-side API key", "upstream_url", cfg.UpstreamURL)
+	} else {
+		log.Info("upstream proxy initialized (using client auth headers)", "upstream_url", cfg.UpstreamURL)
+	}
 
 	// Initialize cache handler
 	handlerConfig := &handler.Config{

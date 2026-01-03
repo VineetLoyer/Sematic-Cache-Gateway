@@ -23,6 +23,8 @@ type ProxyConfig struct {
 	UpstreamURL string
 	// Timeout is the maximum duration for upstream requests
 	Timeout time.Duration
+	// APIKey is the optional server-side API key for upstream requests
+	APIKey string
 }
 
 // DefaultTimeout is the default timeout for upstream requests.
@@ -85,6 +87,11 @@ func (p *Proxy) Forward(ctx context.Context, req *http.Request) (*http.Response,
 
 	// Copy headers from original request, preserving authentication and content type
 	copyHeaders(req.Header, upstreamReq.Header)
+
+	// If server-side API key is configured, use it instead of client's auth header
+	if p.config.APIKey != "" {
+		upstreamReq.Header.Set("Authorization", "Bearer "+p.config.APIKey)
+	}
 
 	// Set Host header to upstream host
 	upstreamReq.Host = p.upstreamURL.Host
