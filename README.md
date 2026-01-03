@@ -132,7 +132,7 @@ Access real-time metrics at `/stats`:
 
 JSON API available at `/stats/json`.
 
-![Stats Dashboard](https://via.placeholder.com/800x400?text=Stats+Dashboard+Preview)
+![Stats Dashboard](/image.png)
 
 ## Deployment
 
