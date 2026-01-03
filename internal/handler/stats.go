@@ -190,7 +190,7 @@ var tmpl = template.Must(template.New("dashboard").Parse(`
             </div>
             
             <div class="card">
-                <div class="card-value cost-saved">${{printf "%.2f" .CostSaved}}</div>
+                <div class="card-value cost-saved">${{printf "%.4f" .CostSaved}}</div>
                 <div class="card-label">Cost Saved</div>
             </div>
             
@@ -230,6 +230,9 @@ var tmpl = template.Must(template.New("dashboard").Parse(`
         <div class="footer">
             Auto-refreshes every 5 seconds • 
             <a href="/stats/json" style="color: #00d9ff;">JSON API</a>
+            <div style="margin-top: 15px; color: #555;">
+                Made with ❤️ by <span style="color: #00d9ff;">Vineet Loyer</span>
+            </div>
         </div>
     </div>
 </body>
