@@ -107,6 +107,7 @@ var tmpl = template.Must(template.New("dashboard").Parse(`
 <html>
 <head>
     <title>Semantic Cache Gateway - Stats</title>
+    <meta charset="UTF-8">
     <meta http-equiv="refresh" content="5">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
