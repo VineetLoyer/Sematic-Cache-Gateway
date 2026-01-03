@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -108,14 +109,28 @@ func (p *Proxy) Forward(ctx context.Context, req *http.Request) (*http.Response,
 // buildUpstreamURL constructs the full upstream URL from the request path.
 func (p *Proxy) buildUpstreamURL(path, rawQuery string) string {
 	u := *p.upstreamURL
-	// Append the request path to the upstream base path
-	// e.g., upstream "https://api.openai.com/v1" + path "/chat/completions"
-	// becomes "https://api.openai.com/v1/chat/completions"
-	if u.Path != "" && u.Path != "/" {
-		u.Path = u.Path + path
-	} else {
+	
+	// Handle path construction to avoid duplication
+	// If request path starts with /v1 and upstream already has /v1, don't duplicate
+	basePath := u.Path
+	if basePath == "" || basePath == "/" {
 		u.Path = path
+	} else {
+		// Check if request path would duplicate the base path segment
+		// e.g., base="/v1", path="/v1/chat/completions" -> use just path
+		// e.g., base="/v1", path="/chat/completions" -> append
+		if len(path) > 0 && len(basePath) > 0 {
+			// If path starts with the same segment as basePath, use path directly
+			if strings.HasPrefix(path, basePath) {
+				u.Path = path
+			} else {
+				u.Path = basePath + path
+			}
+		} else {
+			u.Path = basePath + path
+		}
 	}
+	
 	u.RawQuery = rawQuery
 	return u.String()
 }
