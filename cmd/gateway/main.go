@@ -109,6 +109,9 @@ func main() {
 	mux.HandleFunc("/stats", handler.StatsDashboard)
 	mux.HandleFunc("/stats/json", handler.StatsJSON)
 
+	// Cache management endpoint
+	mux.HandleFunc("/cache/clear", handler.ClearCacheHandler(cacheService))
+
 	// Create HTTP server
 	server := &http.Server{
 		Addr:         fmt.Sprintf(":%d", cfg.Port),

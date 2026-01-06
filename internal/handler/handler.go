@@ -315,3 +315,30 @@ func HealthHandler(redisClient interface{ IsHealthy(context.Context) bool }) htt
 		json.NewEncoder(w).Encode(status)
 	}
 }
+
+// ClearCacheHandler returns a handler that clears the cache.
+func ClearCacheHandler(cacheService cache.CacheService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost && r.Method != http.MethodDelete {
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			json.NewEncoder(w).Encode(map[string]string{"error": "method not allowed, use POST or DELETE"})
+			return
+		}
+
+		ctx := r.Context()
+		if err := cacheService.Clear(ctx); err != nil {
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+			return
+		}
+
+		// Reset stats
+		ResetStats()
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(map[string]string{"status": "cache cleared"})
+	}
+}

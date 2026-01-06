@@ -46,6 +46,16 @@ func RecordError() {
 	atomic.AddInt64(&globalStats.Errors, 1)
 }
 
+// ResetStats resets all stats to zero.
+func ResetStats() {
+	atomic.StoreInt64(&globalStats.TotalRequests, 0)
+	atomic.StoreInt64(&globalStats.CacheHits, 0)
+	atomic.StoreInt64(&globalStats.CacheMisses, 0)
+	atomic.StoreInt64(&globalStats.Errors, 0)
+	atomic.StoreInt64(&globalStats.TotalLatencyMs, 0)
+	globalStats.StartTime = time.Now()
+}
+
 // GetStats returns current stats.
 func GetStats() Stats {
 	return Stats{
