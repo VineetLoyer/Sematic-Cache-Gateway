@@ -32,16 +32,18 @@ type CacheServiceImpl struct {
 	redis     *RedisClient
 	logger    *logger.Logger
 	indexName string
+	ttl       time.Duration
 }
 
 type CacheServiceConfig struct {
 	IndexName  string
 	Dimensions int
+	TTL        time.Duration
 }
 
 // DefaultCacheServiceConfig returns default configuration.
 func DefaultCacheServiceConfig() *CacheServiceConfig {
-	return &CacheServiceConfig{IndexName: "cache_idx", Dimensions: 1536}
+	return &CacheServiceConfig{IndexName: "cache_idx", Dimensions: 1536, TTL: 24 * time.Hour}
 }
 
 // NewCacheService creates a new CacheService with the given Redis client.
@@ -49,7 +51,7 @@ func NewCacheService(redis *RedisClient, log *logger.Logger, cfg *CacheServiceCo
 	if cfg == nil {
 		cfg = DefaultCacheServiceConfig()
 	}
-	svc := &CacheServiceImpl{redis: redis, logger: log, indexName: cfg.IndexName}
+	svc := &CacheServiceImpl{redis: redis, logger: log, indexName: cfg.IndexName, ttl: cfg.TTL}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -185,6 +187,13 @@ func (c *CacheServiceImpl) store(ctx context.Context, entry *CacheEntry) error {
 	}
 	if err := c.redis.JSONSetRaw(ctx, entry.ID, "$", string(data)); err != nil {
 		return fmt.Errorf("failed to store cache entry: %w", err)
+	}
+	
+	// Set TTL for automatic expiration
+	if c.ttl > 0 {
+		if err := c.redis.Client().Expire(ctx, entry.ID, c.ttl).Err(); err != nil {
+			c.logger.Error("failed to set TTL", "error", err.Error(), "key", entry.ID)
+		}
 	}
 	return nil
 }
